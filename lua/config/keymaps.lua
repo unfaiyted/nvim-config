@@ -12,6 +12,8 @@ local keymap = vim.keymap
 
 vim.keymap.set("n", "<A-h>", "^", { desc = "Go to start of line" })
 vim.keymap.set("n", "<A-l>", "$", { desc = "Go to end of line" })
+vim.keymap.set("v", "<A-h>", "^", { desc = "Go to start of line" })
+vim.keymap.set("v", "<A-l>", "$", { desc = "Go to end of line" })
 
 -- Custom keybindings for splitting buffers
 vim.keymap.set("n", "<leader>-", ":split<CR>", { desc = "Horizontal Split" })
