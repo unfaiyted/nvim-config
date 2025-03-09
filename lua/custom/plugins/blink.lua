@@ -1,0 +1,43 @@
+return {}
+-- return { --- https://github.com/saghen/blink.cmp
+--   'saghen/blink.cmp',
+--   dependencies = 'rafamadriz/friendly-snippets',
+--   version = '*',
+--   opts = {
+--     completion = {
+--       ghost_text = { enabled = true },
+--       menu = {
+--         border = 'single',
+--         auto_show = function(ctx) -- don't auto show except for cmdline and path
+--           return (ctx.mode == 'cmdline') or (ctx.mode == 'path')
+--         end,
+--       },
+--       documentation = { auto_show = true, window = { border = 'single' } },
+--     },
+--     signature = { enabled = true, window = { border = 'single' } },
+--     keymap = {
+--       preset = 'super-tab',
+--       ['<C-n>'] = { 'show', 'select_next', 'fallback' },
+--     },
+--     cmdline = {
+--       keymap = {
+--         preset = 'super-tab',
+--         ['<Up>'] = { 'fallback' },
+--         ['<Down>'] = { 'fallback' },
+--         ['<C-n>'] = { 'show', 'select_next', 'fallback' },
+--         ['<C-p>'] = { 'show', 'select_prev', 'fallback' },
+--       },
+--     },
+--     sources = {
+--       default = { 'lazydev', 'lsp', 'path', 'snippets', 'buffer' },
+--       providers = {
+--         lazydev = {
+--           name = 'LazyDev',
+--           module = 'lazydev.integrations.blink',
+--           score_offset = 100,
+--         },
+--         path = { opts = { show_hidden_files_by_default = true } },
+--       },
+--     },
+--   },
+-- }
