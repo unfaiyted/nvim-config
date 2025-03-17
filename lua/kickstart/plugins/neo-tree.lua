@@ -76,6 +76,7 @@ return {
       mappings = {
         ['l'] = 'open',
         ['h'] = 'close_node',
+        ['e'] = 'expand_all_nodes',
         ['<space>'] = 'none',
         ['Y'] = {
           function(state)
