@@ -333,3 +333,40 @@ vim.keymap.set('n', 'vac', function()
     vim.cmd(string.format('normal! %dGV%dG', start_line, end_line))
   end
 end, { desc = 'Select around markdown code block' })
+
+-- Function to yank inside a markdown code block
+vim.keymap.set('n', 'yic', function()
+  -- Find the start of the code block (```)
+  local cur_line = vim.fn.line '.'
+  local start_line = cur_line
+
+  while start_line > 0 do
+    local line = vim.fn.getline(start_line)
+    if line:match '^```' then
+      break
+    end
+    start_line = start_line - 1
+  end
+
+  -- Find the end of the code block (```)
+  local end_line = cur_line
+  local last_line = vim.fn.line '$'
+
+  while end_line <= last_line do
+    local line = vim.fn.getline(end_line)
+    if end_line > start_line and line:match '^```' then
+      break
+    end
+    end_line = end_line + 1
+  end
+
+  -- Select and yank the content inside the code block (excluding the backticks)
+  if start_line < end_line then
+    -- Use visual mode to select, then yank
+    vim.cmd(string.format('normal! %dGV%dGy', start_line + 1, end_line - 1))
+    vim.notify(string.format('Yanked %d lines from code block', end_line - start_line - 1), vim.log.levels.INFO)
+  end
+end, { desc = 'Yank inside markdown code block' })
+
+-- Yank the content inside the code block (excluding the backticks)
+vim.keymap.set('n', '<leader>a', 'ggVG', { desc = 'Select entire buffer' })

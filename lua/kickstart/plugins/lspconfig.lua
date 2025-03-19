@@ -42,6 +42,22 @@ return {
       -- (sometimes called LSP servers, but that's kind of like ATM Machine) are standalone
       -- processes that communicate with some "client" - in this case, Neovim!
       --
+
+      -- attach keymaps
+      local on_attach = function(client, bufnr)
+        if client.name == 'svelte' then
+          vim.api.nvim_create_autocmd('BufWritePost', {
+            pattern = { '*.js', '*.ts' },
+            group = vim.api.nvim_create_augroup('svelte_ondidchangetsorjsfile', { clear = true }),
+            callback = function(ctx)
+              -- Here use ctx.match instead of ctx.file
+              client.notify('$/onDidChangeTsOrJsFile', { uri = ctx.match })
+            end,
+          })
+        end
+
+        attach_keymaps(client, bufnr)
+      end
       -- LSP provides Neovim with features like:
       --  - Go to definition
       --  - Find references
