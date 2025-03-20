@@ -370,3 +370,6 @@ end, { desc = 'Yank inside markdown code block' })
 
 -- Yank the content inside the code block (excluding the backticks)
 vim.keymap.set('n', '<leader>a', 'ggVG', { desc = 'Select entire buffer' })
+
+vim.keymap.set('n', '<A-;>', '<cmd>vertical resize -5<CR>', { desc = 'Move panel divider left', silent = true })
+vim.keymap.set('n', "<A-'>", '<cmd>vertical resize +5<CR>', { desc = 'Move panel divider right', silent = true })
