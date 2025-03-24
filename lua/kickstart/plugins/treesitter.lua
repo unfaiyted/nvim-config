@@ -3,6 +3,9 @@ return {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter-textobjects',
+    },
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
       ensure_installed = {
@@ -25,6 +28,10 @@ return {
         'vue',
         'typst',
         'regex',
+        'go',
+        'gomod',
+        'gowork',
+        'gosum',
       },
       -- Autoinstall languages that are not installed
       auto_install = true,
@@ -36,6 +43,19 @@ return {
         additional_vim_regex_highlighting = { 'ruby' },
       },
       indent = { enable = true, disable = { 'ruby' } },
+      textobjects = {
+        select = {
+          enable = true,
+          lookahead = true, -- Automatically jump forward to textobj
+          keymaps = {
+            -- You can use the capture groups defined in textobjects.scm
+            ['af'] = '@function.outer',
+            ['if'] = '@function.inner',
+            ['ac'] = '@class.outer',
+            ['ic'] = '@class.inner',
+          },
+        },
+      },
     },
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:

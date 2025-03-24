@@ -3,8 +3,7 @@ return {
   dependencies = {
     'nvim-lua/plenary.nvim',
     { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
-    { 'echasnovski/mini.diff' },
-    -- { 'hrsh7th/nvim-cmp' },
+    { 'hrsh7th/nvim-cmp' },
     --- The below is optional, make sure to setup it properly if you have lazy=true
     -- {
     --   'saghen/blink.cmp',
@@ -41,48 +40,15 @@ return {
   },
   config = function()
     require('codecompanion').setup {
-
-      display = {
-        chat = {
-          diff = { enabled = true },
-        },
-        diff = {
-          enabled = true,
-          provider = 'mini_diff',
-        },
-      },
       strategies = {
         chat = {
           adapter = 'anthropic',
-          keymaps = {
-            send = {
-              modes = {
-                n = '<C-s>',
-                i = '<C-s>',
-              },
-              -- callback = custom_send_callback,
-              -- callback = function()
-              --   vim.cmd 'stopinsert'
-              --   -- keymaps.send(cc.chat)
-              --   -- require("codecompanion"
-              -- end,
-              description = 'Send with mode switch',
-            },
-          },
         },
         inline = {
           adapter = 'anthropic',
         },
-        cmd = { adapter = 'anthropic' },
       },
     }
-
-    -- local original_keymaps = {}
-    -- vim.defer_fn(function()
-    --   if keymaps then
-    --     original_keymaps.send = keymaps.send
-    --   end
-    -- end, 100)
   end,
   keys = {
     {
@@ -96,18 +62,6 @@ return {
       '<LocalLeader>a',
       '<cmd>CodeCompanionChat Toggle<cr>',
       desc = 'Toggle CodeCompanion chat',
-    },
-    {
-      '<leader>cc',
-      '<cmd>CodeCompanionChat Toggle<cr>',
-      mode = { 'n' },
-      desc = 'Toggle CodeCompanion Chat',
-    },
-    {
-      '<leader>cc',
-      "<cmd>'<,'> CodeCompanionChat<cr>",
-      mode = { 'v' },
-      desc = 'Toggle CodeCompanion Chat with Visual Selection',
     },
     {
       mode = 'v',

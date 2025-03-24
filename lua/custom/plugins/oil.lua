@@ -16,7 +16,7 @@ return {
       ['gr'] = 'actions.refresh',
       ['-'] = { 'actions.parent', mode = 'n' },
       ['_'] = { 'actions.open_cwd', mode = 'n' },
-      ['`'] = { 'actions.ckd', mode = 'n' },
+      -- ['`'] = { 'actions.ckd', mode = 'n' },
       ['~'] = { 'actions.cd', opts = { scope = 'tab' }, mode = 'n' },
       ['gs'] = { 'actions.change_sort', mode = 'n' },
       ['gx'] = 'actions.open_external',

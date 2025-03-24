@@ -1,4 +1,290 @@
--- LSP Plugins
+-- -- [[ Configure LSP ]]
+-- --  This function gets run when an LSP connects to a particular buffer.
+-- local on_attach = function(client, bufnr)
+--   local nmap = function(keys, func, desc)
+--     if desc then
+--       desc = 'LSP: ' .. desc
+--     end
+--
+--     vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
+--   end
+--
+--   -- Golang handling
+--   if not client.server_capabilities.semanticTokensProvider then
+--     local semantic = client.config.capabilities.textDocument.semanticTokens
+--     client.server_capabilities.semanticTokensProvider = {
+--       full = true,
+--       legend = {
+--         tokenTypes = semantic.tokenTypes,
+--         tokenModifiers = semantic.tokenModifiers,
+--       },
+--       range = true,
+--     }
+--   end
+--
+--   if client.name == 'vtsls' then
+--     nmap('<leader>co', function()
+--       vim.lsp.buf.code_action {
+--         apply = true,
+--         context = {
+--           only = { 'source.removeUnused.ts' },
+--           diagnostics = {},
+--         },
+--       }
+--     end, '[C]ode [O]rganize Imports')
+--
+--     nmap('<leader>cu', function()
+--       vim.lsp.buf.code_action {
+--         apply = true,
+--         context = {
+--           only = { 'source.removeUnused.ts' },
+--           diagnostics = {},
+--         },
+--       }
+--     end, '[C]ode Remove [U]nused Code')
+--
+--     nmap('<leader>cl', function()
+--       vim.lsp.buf.code_action {
+--         apply = true,
+--         context = {
+--           only = { 'source.fixAll.biome' },
+--           diagnostics = {},
+--         },
+--       }
+--     end, '[C]ode [L]int Fix All')
+--
+--     nmap('<leader>cL', function()
+--       vim.lsp.buf.execute_command {
+--         command = 'typescript.openTsServerLog',
+--       }
+--     end)
+--
+--     nmap('<leader>cR', function()
+--       vim.lsp.buf.execute_command {
+--         command = 'typescript.reloadProjects',
+--       }
+--     end, '[C]ode [R]estart Server')
+--
+--     nmap('<leader>cV', function()
+--       vim.lsp.buf.execute_command {
+--         command = 'typescript.selectTypeScriptVersion',
+--       }
+--     end, '[C]ode [V]ersion')
+--
+--     nmap('<leader>cD', function()
+--       local position_params = vim.lsp.util.make_position_params()
+--
+--       vim.lsp.buf.execute_command {
+--         command = 'typescript.goToSourceDefinition',
+--         arguments = { vim.api.nvim_buf_get_name(0), position_params.position },
+--       }
+--     end, '[C]ode [D]efinition')
+--   end
+--
+--   nmap('<leader>cr', vim.lsp.buf.rename, '[C]ode [R]ename')
+--   nmap('<leader>cd', vim.diagnostic.open_float, '[C]ode [D]iagnostics')
+--   nmap('<leader>ci', function()
+--     local is_enabled = vim.lsp.inlay_hint.is_enabled {}
+--     vim.lsp.inlay_hint.enable(not is_enabled)
+--   end, '[C]ode [I]nlay Hints')
+--
+--   vim.keymap.set({ 'n', 'x' }, '<leader>ca', function()
+--     vim.lsp.buf.code_action()
+--   end, { desc = '[C]ode [A]ction' })
+--
+--   nmap('<leader>ca', function()
+--     vim.lsp.buf.code_action { context = { only = { 'quickfix', 'refactor', 'source' } } }
+--   end, '[C]ode [A]ction')
+--
+--   nmap('gd', require('snacks.picker').lsp_definitions, '[G]oto [D]efinition')
+--   nmap('gD', require('snacks.picker').lsp_type_definitions, '[G]oto [D]efinition')
+--   -- nmap("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
+--   -- nmap("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
+--   -- nmap("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
+--   -- nmap("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
+--   -- nmap("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
+--   -- nmap("<leader>d", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
+--   -- nmap("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
+--
+--   -- See `:help K` for why this keymap
+--   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
+--   nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
+--
+--   -- Lesser used LSP functionality
+--   -- nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+--   nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
+--   nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
+--   nmap('<leader>wl', function()
+--     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+--   end, '[W]orkspace [L]ist Folders')
+-- end
+--
+-- local servers = {
+--   vtsls = {
+--     vtsls = {
+--       autoUseWorkspaceTsdk = true,
+--       experimental = {
+--         completion = {
+--           enableServerSideFuzzyMatch = true,
+--           entriesLimit = 25,
+--         },
+--       },
+--     },
+--     typescript = {
+--       preferences = {
+--         includeCompletionsForImportStatements = true,
+--       },
+--       maxTsServerMemory = 16384,
+--       inlayHints = {
+--         parameterNames = {
+--           enabled = 'all',
+--         },
+--         variableTypes = {
+--           enabled = true,
+--         },
+--         propertyDeclarationTypes = {
+--           enabled = true,
+--         },
+--         functionLikeReturnTypes = {
+--           enabled = true,
+--         },
+--       },
+--     },
+--   },
+--   prismals = {},
+--   lua_ls = {
+--     Lua = {
+--       workspace = { checkThirdParty = false },
+--       telemetry = { enable = false },
+--       -- NOTE: toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+--       diagnostics = { disable = { 'missing-fields' } },
+--     },
+--   },
+--   svelte = {},
+--   gopls = {
+--     gofumpt = true,
+--     codelenses = {
+--       gc_details = false,
+--       generate = true,
+--       regenerate_cgo = true,
+--       run_govulncheck = true,
+--       test = true,
+--       tidy = true,
+--       upgrade_dependency = true,
+--       vendor = true,
+--     },
+--     hints = {
+--       assignVariableTypes = true,
+--       compositeLiteralFields = true,
+--       compositeLiteralTypes = true,
+--       constantValues = true,
+--       functionTypeParameters = true,
+--       parameterNames = true,
+--       rangeVariableTypes = true,
+--     },
+--     analyses = {
+--       nilness = true,
+--       unusedparams = true,
+--       unusedwrite = true,
+--       useany = true,
+--     },
+--     usePlaceholders = true,
+--     completeUnimported = true,
+--     staticcheck = true,
+--     directoryFilters = { '-.git', '-.vscode', '-.idea', '-.vscode-test', '-node_modules' },
+--     semanticTokens = true,
+--     filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
+--   },
+--   glsl_analyzer = {},
+--   biome = {},
+--   tailwindcss = {
+--     tailwindCSS = {
+--       experimental = {
+--         -- classRegex = {
+--         --   {
+--         --     "cn\\(([^]*)\\)",
+--         --     "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)",
+--         --   },
+--         -- },
+--       },
+--     },
+--   },
+--   astro = {},
+-- }
+--
+-- local vtsls_handlers = {
+--   ['workspace/executeCommand'] = function(err, result, ctx, config)
+--     if ctx.params.command ~= 'typescript.goToSourceDefinition' then
+--       return
+--     end
+--     vim.print(vim.inspect(result))
+--     if result == nil or #result == 0 then
+--       return
+--     end
+--
+--     vim.lsp.util.jump_to_location(result[1], 'utf-8')
+--   end,
+-- }
+--
+-- --- @type LazySpec
+-- return {
+--   -- LSP Configuration & Plugins
+--   'neovim/nvim-lspconfig',
+--   dependencies = {
+--     -- Automatically install LSPs to stdpath for neovim
+--     {
+--       'williamboman/mason.nvim',
+--       opts = function()
+--         --- @type MasonSettings
+--         return {
+--           ui = {
+--             icons = require('nvim-nonicons.extentions.mason').icons,
+--           },
+--           ensure_installed = {
+--             'goimports',
+--             'gofumpt',
+--             'gomodifytags',
+--             'impl',
+--             'delve'
+--           },
+--         }
+--       end,
+--     },
+--     { 'folke/neodev.nvim', config = true },
+--     {
+--       'williamboman/mason-lspconfig.nvim',
+--       config = function()
+--         local lspconfig = require 'lspconfig'
+--         local blink_cmp = require 'blink.cmp'
+--         local capabilities = blink_cmp.get_lsp_capabilities()
+--
+--         require('mason-lspconfig').setup {
+--           ensure_installed = vim.tbl_keys(servers),
+--           handlers = {
+--             function(server_name)
+--               local handlers = server_name == 'vtsls' and vtsls_handlers or {}
+--
+--               lspconfig[server_name].setup {
+--                 capabilities = capabilities,
+--                 on_attach = on_attach,
+--                 settings = servers[server_name],
+--                 filetypes = (servers[server_name] or {}).filetypes,
+--                 handlers = handlers,
+--               }
+--             end,
+--           },
+--         }
+--       end,
+--     },
+--   },
+-- }
+--
+--
+--
+--
+
+-- --
+-- -- -- LSP Plugins
 return {
   {
     -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
@@ -88,30 +374,97 @@ return {
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
 
+          -- Function to swap top and bottom split buffers
+          function SwapTopBottomBuffers()
+            -- Get all windows
+            local wins = vim.api.nvim_list_wins()
+            if #wins < 2 then
+              return
+            end
+
+            -- Get window positions
+            local win_positions = {}
+            for _, win in ipairs(wins) do
+              local pos = vim.api.nvim_win_get_position(win)
+              win_positions[win] = pos[1] -- Row position (y-coordinate)
+            end
+
+            -- Sort windows by vertical position
+            table.sort(wins, function(a, b)
+              return win_positions[a] < win_positions[b]
+            end)
+
+            -- Get the top and bottom windows
+            local top_win = wins[1]
+            local bottom_win = wins[#wins]
+
+            -- Swap buffers
+            local top_buf = vim.api.nvim_win_get_buf(top_win)
+            local bottom_buf = vim.api.nvim_win_get_buf(bottom_win)
+
+            vim.api.nvim_win_set_buf(top_win, bottom_buf)
+            vim.api.nvim_win_set_buf(bottom_win, top_buf)
+          end
+
+          -- Map it to a key
+          -- vim.keymap.set('n', '<leader>sb', SwapTopBottomBuffers, { desc = 'Swap top/bottom buffers' })
+
           -- Jump to the definition of the word under your cursor.
           --  This is where a variable was first declared, or where a function is defined, etc.
           --  To jump back, press <C-t>.
-          map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+          map('gd', require('snacks.picker').lsp_definitions, '[G]oto [D]efinition')
 
           -- Find references for the word under your cursor.
-          map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+          map('gr', require('snacks.picker').lsp_references, '[G]oto [R]eferences')
 
           -- Jump to the implementation of the word under your cursor.
           --  Useful when your language has ways of declaring types without an actual implementation.
-          map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+          map('gI', require('snacks.picker').lsp_implementations, '[G]oto [I]mplementation')
 
+          -- Open definition in a right split
+          map('<leader>gdr', function()
+            require('snacks.picker').lsp_definitions { jump_type = 'vsplit' }
+          end, 'Open definition in right split')
+
+          -- Open definition in a left split
+          -- map('<leader>gdl', function()
+          --   vim.cmd.normal 'mq' -- Mark current position
+          --   vim.cmd 'vsplit' -- Split vertically first
+          --   vim.cmd.normal '<C-h>' -- Move to left window
+          --   require('telescope.builtin').lsp_definitions { initial_mode = 'normal' }
+          --   -- vim.cmd.normal '`q' -- Return to original mark
+          --   --
+          -- end, 'Open definition in left split')
+          --
+          -- Open definition in a top split
+          map('<leader>gdb', function()
+            vim.cmd.normal 'mq' -- Mark current position
+            vim.cmd 'split' -- Split horizontally first
+            vim.cmd.normal '<C-k>' -- Move to top window
+            require('snacks.picker').lsp_definitions { initial_mode = 'normal' }
+            vim.cmd.normal '`q' -- Return to original mark
+          end, 'Open definition in top split')
+
+          -- Open definition in a bottom split
+          -- map('<leader>gdt', function()
+          --   require('telescope.builtin').lsp_definitions { jump_type = 'split' }
+          --   -- vim.cmd.normal '<leader>sb' -- Move to left window
+          --   --
+          --   SwapTopBottomBuffers()
+          -- end, 'Open definition in bottom split')
+          --
           -- Jump to the type of the word under your cursor.
           --  Useful when you're not sure what type a variable is and you want to see
           --  the definition of its *type*, not where it was *defined*.
-          map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
+          map('<leader>D', require('snacks.picker').lsp_type_definitions, 'Type [D]efinition')
 
           -- Fuzzy find all the symbols in your current document.
           --  Symbols are things like variables, functions, types, etc.
-          map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+          map('<leader>ds', require('snacks.picker').lsp_symbols, '[D]ocument [S]ymbols')
 
           -- Fuzzy find all the symbols in your current workspace.
           --  Similar to document symbols, except searches over your entire project.
-          map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+          map('<leader>ws', require('snacks.picker').lsp_workspace_symbols, '[W]orkspace [S]ymbols')
 
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
@@ -212,8 +565,8 @@ return {
       --  By default, Neovim doesn't support everything that is in the LSP specification.
       --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
       --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+      -- local capabilities = vim.lsp.protocol.make_client_capabilities()
+      -- capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -273,21 +626,34 @@ return {
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
+      local lspconfig = require 'lspconfig'
+      local blink_cmp = require 'blink.cmp'
+      local capabilities = blink_cmp.get_lsp_capabilities()
+
       require('mason-lspconfig').setup {
         ensure_installed = { 'svelte', 'gopls', 'vtsls' }, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
         automatic_installation = true,
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
+            local handlers = server_name == 'vtsls' and vtsls_handlers or {}
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
             -- certain features of an LSP (for example, turning off formatting for ts_ls)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
+
+            lspconfig[server_name].setup {
+              capabilities = capabilities,
+              -- on_attach = on_attach,
+              settings = servers[server_name],
+              filetypes = (servers[server_name] or {}).filetypes,
+              handlers = handlers,
+            }
+            -- lorequire('lspconfig')[server_name].setup(server)
           end,
         },
       }
     end,
   },
 }
--- vim: ts=2 sts=2 sw=2 et
+--vim: ts=2 sts=2 sw=2 et

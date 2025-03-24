@@ -200,7 +200,7 @@ local function enter_window_mode()
 
     vim.keymap.set('n', '<Esc>', exit_window_mode, { nowait = true, silent = true })
     vim.keymap.set('n', 'q', exit_window_mode, { nowait = true, silent = true })
-
+    -- vim.keymap.set('i', '<Esc>', exit_window_mode, { nowait = true, silent = true })
     -- Create autocmd to handle buffer/window switches
     vim.api.nvim_create_autocmd({ 'BufLeave', 'WinLeave' }, {
       callback = function()
@@ -373,3 +373,8 @@ vim.keymap.set('n', '<leader>a', 'ggVG', { desc = 'Select entire buffer' })
 
 vim.keymap.set('n', '<A-;>', '<cmd>vertical resize -5<CR>', { desc = 'Move panel divider left', silent = true })
 vim.keymap.set('n', "<A-'>", '<cmd>vertical resize +5<CR>', { desc = 'Move panel divider right', silent = true })
+
+vim.keymap.set('n', '<leader>=', '<C-w>=', { desc = 'Equalize window sizes', silent = true })
+
+vim.keymap.set('i', '<C-s>', '<Esc>', { noremap = true })
+vim.keymap.set('i', '<Esc>', '<Esc>', { noremap = true })

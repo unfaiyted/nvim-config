@@ -36,5 +36,6 @@ return {
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
   },
+  { 'echasnovski/mini.animate', version = false },
 }
 -- vim: ts=2 sts=2 sw=2 et
