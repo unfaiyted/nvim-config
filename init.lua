@@ -118,3 +118,63 @@ vim.filetype.add {
 
 local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
 parser_config.postcss = parser_config.scss
+
+-- RAG Service
+
+-- -- In your init.lua or another appropriate file
+-- local rag_service = require 'avante.rag_service'
+--
+-- -- Function to set up and start the RAG service
+-- function SetupRAG()
+--   -- Launch the service
+--   rag_service.launch_rag_service(function()
+--     vim.notify 'RAG service is running!'
+--
+--     -- Add resources to index (adjust the path as needed)
+--     rag_service.add_resource 'file:///home/faiyt/codebase/your-project/'
+--
+--     -- Monitor indexing status
+--     vim.defer_fn(function()
+--       local status = rag_service.indexing_status 'file:///home/faiyt/codebase/suasor/'
+--       vim.notify('Indexing status: ' .. vim.inspect(status))
+--     end, 5000)
+--   end)
+-- end
+--
+-- -- Create command to start RAG service
+-- vim.api.nvim_create_user_command('RAGStart', function()
+--   SetupRAG()
+-- end, {})
+--
+-- -- Create command to query the RAG service
+-- vim.api.nvim_create_user_command('RAGQuery', function(opts)
+--   local query = opts.args
+--   local results, err = rag_service.retrieve('file:///home/faiyt/codebase/suasor/', query)
+--
+--   if results then
+--     -- Display results in a floating window
+--     local buf = vim.api.nvim_create_buf(false, true)
+--     vim.api.nvim_buf_set_lines(buf, 0, -1, false, vim.split(results.response, '\n'))
+--
+--     local width = math.min(120, vim.o.columns - 4)
+--     local height = math.min(30, vim.o.lines - 4)
+--
+--     vim.api.nvim_open_win(buf, true, {
+--       relative = 'editor',
+--       width = width,
+--       height = height,
+--       row = (vim.o.lines - height) / 2,
+--       col = (vim.o.columns - width) / 2,
+--       style = 'minimal',
+--       border = 'rounded',
+--     })
+--   else
+--     vim.notify('Error: ' .. (err or 'Unknown error'), vim.log.levels.ERROR)
+--   end
+-- end, { nargs = '+' })
+--
+-- -- Create command to stop RAG service
+-- vim.api.nvim_create_user_command('RAGStop', function()
+--   rag_service.stop_rag_service()
+--   vim.notify 'RAG service stopped'
+-- end, {})

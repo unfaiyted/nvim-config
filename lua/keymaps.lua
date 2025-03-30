@@ -61,8 +61,8 @@ vim.keymap.set('n', '<leader>_', ':vsplit<CR>', { desc = 'Vertical Split' })
 vim.keymap.set('n', '<leader>\\', ':vsplit<CR>', { desc = 'Vertical Split' })
 
 -- Or for even faster movement (10 lines):
-vim.keymap.set('n', '<A-S-j>', '15j', { noremap = true, silent = true })
-vim.keymap.set('n', '<A-S-k>', '15k', { noremap = true, silent = true })
+vim.keymap.set('n', '<A-S-j>', '12j', { noremap = true, silent = true })
+vim.keymap.set('n', '<A-S-k>', '12k', { noremap = true, silent = true })
 
 -- Add this to your init.lua or other config file
 vim.keymap.set('n', 'gb', '<C-o>', { noremap = true, desc = 'Go back to last cursor position' })
@@ -378,3 +378,18 @@ vim.keymap.set('n', '<leader>=', '<C-w>=', { desc = 'Equalize window sizes', sil
 
 vim.keymap.set('i', '<C-s>', '<Esc>', { noremap = true })
 vim.keymap.set('i', '<Esc>', '<Esc>', { noremap = true })
+vim.keymap.set('i', '<C-s>', '<Esc>', { noremap = true })
+
+function SafePaste()
+  -- Store the current unnamed register content
+  local saved_reg = vim.fn.getreg '"'
+  local saved_reg_type = vim.fn.getregtype '"'
+
+  -- Perform paste
+  vim.cmd 'normal! p'
+
+  -- Restore the unnamed register to its previous state
+  vim.fn.setreg('"', saved_reg, saved_reg_type)
+end
+-- paste from default register does not replace the default register
+vim.keymap.set('n', '<leader>p', SafePaste, { noremap = true })

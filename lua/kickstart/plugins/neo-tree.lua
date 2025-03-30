@@ -71,64 +71,88 @@ return {
       bind_to_cwd = false,
       follow_current_file = { enabled = true },
       use_libuv_file_watcher = true,
-    },
-    window = {
-      mappings = {
-        ['l'] = 'open',
-        ['h'] = 'close_node',
-        ['e'] = 'expand_all_nodes',
-        ['<space>'] = 'none',
-        ['Y'] = {
-          function(state)
-            local node = state.tree:get_node()
-            local path = node:get_id()
-            vim.fn.setreg('+', path, 'c')
-          end,
-          desc = 'Copy Path to Clipboard',
-        },
-        ['O'] = {
-          function(state)
-            require('lazy.util').open(state.tree:get_node().path, { system = true })
-          end,
-          desc = 'Open with System Application',
-        },
-        ['P'] = { 'toggle_preview', config = { use_float = false } },
-      },
-    },
-    default_component_configs = {
-      indent = {
-        with_expanders = true, -- if nil and file nesting is enabled, will enable expanders
-        expander_collapsed = '',
-        expander_expanded = '',
-        expander_highlight = 'NeoTreeExpander',
-      },
-      git_status = {
-        symbols = {
-          unstaged = '󰄱',
-          staged = '󰱒',
-        },
-      },
-    },
-  },
-  config = function(_, opts)
-    local function on_move(data)
-      Snacks.rename.on_rename_file(data.source, data.destination)
-    end
+      commands = {
+        avante_add_files = function(state)
+          local node = state.tree:get_node()
+          local filepath = node:get_id()
+          local relative_path = require('avante.utils').relative_path(filepath)
 
-    local events = require 'neo-tree.events'
-    opts.event_handlers = opts.event_handlers or {}
-    vim.list_extend(opts.event_handlers, {
-      { event = events.FILE_MOVED, handler = on_move },
-      { event = events.FILE_RENAMED, handler = on_move },
-    })
-    require('neo-tree').setup(opts)
-    vim.api.nvim_create_autocmd('TermClose', {
-      pattern = '*lazygit',
-      callback = function()
-        if package.loaded['neo-tree.sources.git_status'] then
-          require('neo-tree.sources.git_status').refresh()
-        end
-      end,
-    })
-  end,
+          local sidebar = require('avante').get()
+
+          local open = sidebar:is_open()
+          -- ensure avante sidebar is open
+          if not open then
+            require('avante.api').ask()
+            sidebar = require('avante').get()
+          end
+
+          sidebar.file_selector:add_selected_file(relative_path)
+
+          -- remove neo tree buffer
+          if not open then
+            sidebar.file_selector:remove_selected_file 'neo-tree filesystem [1]'
+          end
+        end,
+      },
+      window = {
+        mappings = {
+          ['l'] = 'open',
+          ['h'] = 'close_node',
+          ['e'] = 'expand_all_nodes',
+          ['oa'] = 'avante_add_files',
+          ['<space>'] = 'none',
+          ['Y'] = {
+            function(state)
+              local node = state.tree:get_node()
+              local path = node:get_id()
+              vim.fn.setreg('+', path, 'c')
+            end,
+            desc = 'Copy Path to Clipboard',
+          },
+          ['O'] = {
+            function(state)
+              require('lazy.util').open(state.tree:get_node().path, { system = true })
+            end,
+            desc = 'Open with System Application',
+          },
+          ['P'] = { 'toggle_preview', config = { use_float = false } },
+        },
+      },
+      default_component_configs = {
+        indent = {
+          with_expanders = true, -- if nil and file nesting is enabled, will enable expanders
+          expander_collapsed = '',
+          expander_expanded = '',
+          expander_highlight = 'NeoTreeExpander',
+        },
+        git_status = {
+          symbols = {
+            unstaged = '󰄱',
+            staged = '󰱒',
+          },
+        },
+      },
+    },
+    config = function(_, opts)
+      local function on_move(data)
+        Snacks.rename.on_rename_file(data.source, data.destination)
+      end
+
+      local events = require 'neo-tree.events'
+      opts.event_handlers = opts.event_handlers or {}
+      vim.list_extend(opts.event_handlers, {
+        { event = events.FILE_MOVED, handler = on_move },
+        { event = events.FILE_RENAMED, handler = on_move },
+      })
+      require('neo-tree').setup(opts)
+      vim.api.nvim_create_autocmd('TermClose', {
+        pattern = '*lazygit',
+        callback = function()
+          if package.loaded['neo-tree.sources.git_status'] then
+            require('neo-tree.sources.git_status').refresh()
+          end
+        end,
+      })
+    end,
+  },
 }
