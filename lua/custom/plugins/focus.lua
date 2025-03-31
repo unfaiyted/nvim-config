@@ -1,0 +1,54 @@
+return {
+  'nvim-focus/focus.nvim',
+  version = false,
+  config = function()
+    require('focus').setup {
+      enable = true, -- Enable the plugin
+      commands = true, -- Create Focus commands
+      autoresize = {
+        enable = true, -- Enable auto-resizing of splits
+        width = 100, -- Auto width (0 = golden ratio)
+        height = 0, -- Auto height (0 = golden ratio)
+        minwidth = 20, -- Minimum width for unfocused splits
+        minheight = 5, -- Minimum height for unfocused splits
+
+        height_quickfix = 10, -- Height of quickfix panel
+      },
+      split = {
+        bufnew = false, -- Create blank buffer for new splits
+        tmux = false, -- Create tmux splits instead of nvim splits
+      },
+      ui = {
+        number = true, -- Show line numbers in focused window only
+        relativenumber = true, -- Show relative numbers in focused window only
+        hybridnumber = false, -- Hybrid number mode
+        absolutenumber_unfocussed = false, -- Keep absolute numbers in unfocused windows
+        cursorline = true, -- Show cursorline in focused window only
+        cursorcolumn = false, -- Show cursor column in focused window only
+        colorcolumn = {
+          enable = true, -- Show colorcolumn in focused window only
+          list = '+1', -- Set the comma-separated list for colorcolumn
+        },
+        signcolumn = true, -- Show signcolumn in focused window only
+        winhighlight = true, -- Highlight focused window
+      },
+    }
+
+    -- Optional keymaps for directional splits
+    vim.keymap.set('n', '<Leader>h', function()
+      require('focus').split_command 'h'
+    end, { desc = 'Focus: Split left' })
+    vim.keymap.set('n', '<Leader>j', function()
+      require('focus').split_command 'j'
+    end, { desc = 'Focus: Split down' })
+    vim.keymap.set('n', '<Leader>k', function()
+      require('focus').split_command 'k'
+    end, { desc = 'Focus: Split up' })
+    vim.keymap.set('n', '<Leader>l', function()
+      require('focus').split_command 'l'
+    end, { desc = 'Focus: Split right' })
+    vim.keymap.set('n', '<Leader>n', function()
+      require('focus').split_nicely()
+    end, { desc = 'Focus: Split nicely' })
+  end,
+}
