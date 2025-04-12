@@ -578,6 +578,37 @@ return {
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
+        vtsls = {
+          autoUseWorkspaceTsdk = true,
+          experimental = {
+            completion = {
+              enableServerSideFuzzyMatch = true,
+            },
+          },
+          typescript = {
+            preferences = {
+              includeCompletionsForImportStatements = true,
+            },
+            maxTsServerMemory = 16384,
+            inlayHints = {
+              parameterNames = {
+                enabled = 'all',
+              },
+              variableTypes = {
+                enabled = true,
+              },
+              propertyDeclarationTypes = {
+                enabled = true,
+              },
+              functionLikeReturnTypes = {
+                enabled = true,
+              },
+              chainedCalls = {
+                enabled = true,
+              },
+            },
+          },
+        },
         -- clangd = {},
         -- gopls = {},
         -- pyright = {},

@@ -98,7 +98,13 @@ return {
         end,
         desc = '[F]ind Workspace [S]ymbols',
       },
-
+      {
+        '<leader>fo',
+        function()
+          require('telescope.builtin').oldfiles()
+        end,
+        desc = '[F]ind [O]ld Files',
+      },
       {
         '<leader>fe',
         function()

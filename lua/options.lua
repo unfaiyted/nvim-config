@@ -75,3 +75,7 @@ vim.filetype.add {
 }
 
 vim.opt.swapfile = false
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.foldcolumn = '0'
+vim.opt.signcolumn = 'no'

@@ -393,3 +393,14 @@ function SafePaste()
 end
 -- paste from default register does not replace the default register
 vim.keymap.set('n', '<leader>p', SafePaste, { noremap = true })
+
+-- Mark keymaps
+-- vim.keymap.set('n', 'ma', 'mA', { desc = 'Set mark A', noremap = true })
+-- vim.keymap.set('n', 'mb', 'mB', { desc = 'Set mark B', noremap = true })
+-- vim.keymap.set('n', 'mc', 'mC', { desc = 'Set mark C', noremap = true })
+-- vim.keymap.set('n', '`a', '`A', { desc = 'Go to mark A', noremap = true })
+-- vim.keymap.set('n', '`b', '`B', { desc = 'Go to mark B', noremap = true })
+-- vim.keymap.set('n', '`c', '`C', { desc = 'Go to mark C', noremap = true })
+
+-- Window maximize toggle keymap
+vim.keymap.set('n', '+', ToggleMaximize, { desc = 'Toggle window maximize', silent = true })

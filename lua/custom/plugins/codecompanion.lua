@@ -4,6 +4,7 @@ return {
     'nvim-lua/plenary.nvim',
     { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
     { 'echasnovski/mini.diff' },
+    { 'ravitemer/mcphub.nvim' },
     -- { 'hrsh7th/nvim-cmp' },
     --- The below is optional, make sure to setup it properly if you have lazy=true
     -- {
@@ -53,6 +54,18 @@ return {
       },
       strategies = {
         chat = {
+          tools = {
+            ['mcp'] = {
+              -- calling it in a function would prevent mcphub from being loaded before it's needed
+              callback = function()
+                return require 'mcphub.extensions.codecompanion'
+              end,
+              description = 'Call tools and resources from the MCP Servers',
+              opts = {
+                requires_approval = true,
+              },
+            },
+          },
           adapter = 'anthropic',
           keymaps = {
             send = {
@@ -98,7 +111,7 @@ return {
       desc = 'Toggle CodeCompanion chat',
     },
     {
-      '<leader>cc',
+      '<leader>cd',
       '<cmd>CodeCompanionChat Toggle<cr>',
       mode = { 'n' },
       desc = 'Toggle CodeCompanion Chat',
