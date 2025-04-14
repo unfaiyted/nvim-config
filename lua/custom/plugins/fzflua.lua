@@ -11,6 +11,21 @@ return {
     -- Set up default options if needed
     fzf.setup {
       -- Your existing FZF-Lua options here
+
+      -- Configure fuzzy matching for searches
+      fzf_opts = {
+        -- Enable fuzzy matching
+        -- ['--fuzzy'] = true,
+      },
+
+      -- Configure keymap to override default search
+      keymap = {
+        -- Override the default search with fzf-lua search
+        builtin = {
+          -- When using /, trigger fzf-lua buffer search instead
+          ['<C-/>'] = 'search_in_buffer',
+        },
+      },
     }
 
     -- Search for word under cursor across codebase
@@ -18,6 +33,11 @@ return {
       -- fzf.grep_cword()
       fzf.grep_cword { search = vim.fn.expand '<cword>', no_esc = true }
     end, { desc = '[F]ind [w]ord under cursor' })
+
+    -- Override default search with fuzzy buffer search
+    vim.keymap.set('n', '/', function()
+      fzf.blines { fzf_opts = { ['--no-sort'] = false } }
+    end, { desc = 'Fuzzy search in buffer' })
 
     -- Search for string under cursor in project
     vim.keymap.set('n', '<leader>ss', function()
