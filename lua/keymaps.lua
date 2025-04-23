@@ -69,6 +69,7 @@ vim.keymap.set('n', 'gb', '<C-o>', { noremap = true, desc = 'Go back to last cur
 vim.keymap.set('n', 'gf', '<C-i>', { noremap = true, desc = 'Go forward to next cursor position' })
 -- In lua/config/keymaps.lua
 
+-- Goes to the next error
 keymap.set('n', 'ge', function()
   local has_errors = false
 
@@ -86,7 +87,19 @@ keymap.set('n', 'ge', function()
   else
     vim.diagnostic.goto_next()
   end
-end, { desc = 'Go to next error or diagnostic' })
+end, { desc = '[G]o to next [e]rror or diagnostic' })
+
+-- Yanks the diagnostic message of the current line
+vim.keymap.set('n', '<leader>ce', function()
+  local diagnostics = vim.diagnostic.get(0, { lnum = vim.fn.line '.' - 1 })
+  if #diagnostics > 0 then
+    local message = diagnostics[1].message
+    vim.fn.setreg('+', message)
+    print('Diagnostic copied to clipboard: ' .. message)
+  else
+    print 'No diagnostic at current line'
+  end
+end, { desc = 'Copy current line diagnostic to clipboard' })
 
 vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
 vim.keymap.set('n', '<leader>e', '<CMD>Neotree source=filesystem  position=float<CR>')

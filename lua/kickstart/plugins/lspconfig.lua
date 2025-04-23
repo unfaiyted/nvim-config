@@ -344,6 +344,14 @@ return {
 
         attach_keymaps(client, bufnr)
       end
+
+      vim.api.nvim_create_autocmd('BufWritePre', {
+        pattern = { '*.tf', '*.tfvars' },
+        callback = function()
+          vim.lsp.buf.format()
+        end,
+      })
+
       -- LSP provides Neovim with features like:
       --  - Go to definition
       --  - Find references
@@ -578,6 +586,7 @@ return {
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
+        terraformls = {},
         vtsls = {
           autoUseWorkspaceTsdk = true,
           experimental = {
@@ -622,6 +631,19 @@ return {
         -- ts_ls = {},
         --
 
+        -- kulala_ls = {
+        --   cmd = { 'kulala-ls' },
+        --   filetypes = { 'http', 'rest' },
+        --   settings = {
+        --     kulala = {
+        --       lsp = {
+        --         enable = true,
+        --         -- NOTE: toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+        --         diagnostics = { disable = { 'missing-fields' } },
+        --       },
+        --     },
+        --   },
+        -- },
         lua_ls = {
           -- cmd = { ... },
           -- filetypes = { ... },
@@ -662,7 +684,7 @@ return {
       local capabilities = blink_cmp.get_lsp_capabilities()
 
       require('mason-lspconfig').setup {
-        ensure_installed = { 'svelte', 'gopls', 'vtsls' }, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+        ensure_installed = { 'svelte', 'gopls', 'vtsls', 'kulala_ls', 'terraform-ls' }, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
         automatic_installation = true,
         handlers = {
           function(server_name)

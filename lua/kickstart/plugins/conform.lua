@@ -14,6 +14,13 @@ return {
       },
     },
     opts = {
+      formatters = {
+        kulala = {
+          command = 'kulala-fmt',
+          args = { 'format', '$FILENAME' },
+          stdin = false,
+        },
+      },
       notify_on_error = false,
       format_on_save = function(bufnr)
         -- Disable "format_on_save lsp_fallback" for languages that don't
@@ -33,6 +40,7 @@ return {
       end,
       formatters_by_ft = {
         lua = { 'stylua', 'goimports', 'gofumpt' },
+        http = { 'kulala-fmt' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
