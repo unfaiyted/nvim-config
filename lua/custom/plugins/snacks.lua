@@ -83,13 +83,13 @@ return {
         desc = 'Find Files Smart',
       },
 
-      {
-        '<leader>fr',
-        function()
-          snacks.picker.resume()
-        end,
-        desc = '[F]ind [R]esume',
-      },
+      -- {
+      --   '<leader>fr',
+      --   function()
+      --     snacks.picker.resume()
+      --   end,
+      --   desc = '[F]ind [R]esume',
+      -- },
 
       {
         '<leader>fs',

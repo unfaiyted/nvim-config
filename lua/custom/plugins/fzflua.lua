@@ -48,6 +48,10 @@ return {
       fzf.live_grep()
     end, { desc = '[F]ind text in [p]roject' })
 
+    vim.keymap.set('n', '<leader>fr', function()
+      fzf.resume()
+    end, { desc = '[F]zf [r]esume last search' })
+
     -- Variant with preview window if desired
     vim.keymap.set('n', '<leader>fP', function()
       fzf.live_grep { previewer = true }

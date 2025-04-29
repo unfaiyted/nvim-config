@@ -23,7 +23,10 @@ vim.schedule(function()
   vim.opt.clipboard = 'unnamedplus'
 end)
 
--- Enable break indent
+-- Disable line wrapping
+vim.opt.wrap = false
+
+-- Enable break indent (only applies when wrap is enabled)
 vim.opt.breakindent = true
 
 -- Save undo history
@@ -79,3 +82,27 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.foldcolumn = '0'
 vim.opt.signcolumn = 'no'
+
+vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
+  pattern = '*.yml.j2,*.yaml.j2',
+  callback = function()
+    vim.bo.filetype = 'yaml.jinja2'
+  end,
+})
+--
+--
+--
+--
+-- Jinja2 support ish
+vim.filetype.add {
+  extension = {
+    ['j2'] = function(path, bufnr)
+      if path:match '%.ya?ml%.j2$' then
+        return 'yaml.jinja2'
+      -- json.j2
+      elseif path:match '%.json%.j2$' then
+        return 'json.jinja2'
+      end
+    end,
+  },
+}

@@ -587,6 +587,9 @@ return {
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         terraformls = {},
+        jinja_lsp = {
+          filetypes = { 'jinja', 'j2' },
+        },
         vtsls = {
           autoUseWorkspaceTsdk = true,
           experimental = {

@@ -9,7 +9,7 @@ return {
     -- },
     ft = { 'http', 'rest' },
     opts = {
-      split_direction = 'horizontal',
+      split_direction = 'vertical',
       global_keymaps = true,
       -- your configuration comes here
       --   global_keymaps = {

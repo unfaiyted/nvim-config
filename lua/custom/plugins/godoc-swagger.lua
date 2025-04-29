@@ -1,7 +1,9 @@
+-- Setup without lazy.nvim specifics
+-- Return a dummy placeholder that won't be used
+-- The actual plugin is loaded from the runtime path directly
 return {
-  dir = vim.fn.stdpath 'config' .. '/lua/custom/plugins/godoc-swagger',
-  name = 'godoc-swagger',
-  config = function()
-    require('custom.plugins.godoc-swagger').setup()
-  end,
+  dir = '~/codebase/godoc-swagger.nvim',
+  config = true,
+  event = { 'BufReadPre *.go', 'BufNewFile *.go' },
 }
+

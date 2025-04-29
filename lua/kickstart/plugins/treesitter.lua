@@ -21,6 +21,7 @@ return {
         'vim',
         'vimdoc',
         'yaml',
+        'jinja',
         'css',
         'scss',
         'norg',

@@ -1,2 +1,0 @@
--- Initialize the Godoc Swagger highlighting plugin
--- require('godoc-swagger').setup()
