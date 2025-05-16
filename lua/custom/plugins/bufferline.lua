@@ -1,0 +1,32 @@
+return {}
+-- return {
+--   'akinsho/bufferline.nvim',
+--   version = '*',
+--   dependencies = 'nvim-tree/nvim-web-devicons',
+--   config = function()
+--     require('bufferline').setup {
+--       options = {
+--         -- Basic configuration options
+--         diagnostics = 'nvim_lsp',
+--         show_buffer_icons = true,
+--         separator_style = 'thin',
+--         always_show_bufferline = true,
+--       },
+--     }
+--
+--     -- Keymaps for moving split windows
+--     vim.keymap.set('n', '<leader>bh', '<C-w>H', { desc = 'Move window to the far left' })
+--     vim.keymap.set('n', '<leader>bl', '<C-w>L', { desc = 'Move window to the far right' })
+--     vim.keymap.set('n', '<leader>bj', '<C-w>J', { desc = 'Move window to the bottom' })
+--     vim.keymap.set('n', '<leader>bk', '<C-w>K', { desc = 'Move window to the top' })
+--
+--     -- -- Keymaps for moving buffers left and right
+--     -- vim.keymap.set('n', '<leader>h', function()
+--     --   require('bufferline').move(-1)
+--     -- end, { desc = 'Move buffer left' })
+--     --
+--     -- vim.keymap.set('n', '<leader>bll', function()
+--     --   require('bufferline').move(1)
+--     -- end, { desc = 'Move buffer right' })
+--   end,
+-- }

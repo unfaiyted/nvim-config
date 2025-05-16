@@ -83,6 +83,27 @@ return {
     --
     --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
     --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
+    {
+      'nvim-treesitter/nvim-treesitter-context',
+      dependencies = {
+        'nvim-treesitter/nvim-treesitter',
+      },
+      config = function()
+        require('treesitter-context').setup {
+          enable = true,
+          max_lines = 3,
+          min_window_height = 10,
+          line_numbers = true,
+          multiline_threshold = 1,
+          trim_scope = 'outer',
+          mode = 'cursor',
+          separator = nil,
+          zindex = 20,
+          on_attach = nil,
+        }
+      end,
+    },
+    --
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   },
 }

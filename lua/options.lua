@@ -106,3 +106,15 @@ vim.filetype.add {
     end,
   },
 }
+
+-- vim.filetype.add {
+-- pattern = {
+--   -- Detect ansible playbooks
+--   ['.*/playbooks/.*%.yml'] = 'yaml.ansible',
+--   ['.*/roles/.*%.yml'] = 'yaml.ansible',
+--   ['.*/tasks/.*%.yml'] = 'yaml.ansible',
+--   ['.*/handlers/.*%.yml'] = 'yaml.ansible',
+--   ['.*ansible.*%.yml'] = 'yaml.ansible',
+--   ['.*%.ansible%.yml'] = 'yaml.ansible',
+-- },
+-- }

@@ -1,70 +1,146 @@
+-- Folding configuration using nvim-ufo
 return {
-  'kevinhwang91/nvim-ufo',
-  config = function()
-    -- Use standard UFO setup
-    require('ufo').setup {
+  {
+    'kevinhwang91/nvim-ufo',
+    dependencies = {
+      'kevinhwang91/promise-async',
+    },
+    event = 'BufReadPost',
+    opts = {
+      -- Folded region style
+      open_fold_hl_timeout = 400,
+
+      -- Close some common folds automatically when opening a buffer
+      close_fold_kinds_for_ft = {
+        default = { 'imports', 'comment' },
+        json = { 'array' },
+        yaml = { 'imports' },
+      },
+
+      -- Determine which providers to use based on filetype
       provider_selector = function(bufnr, filetype, buftype)
+        -- Some filetypes work better with specific providers
+        local ft_providers = {
+          vim = 'indent',
+          python = { 'indent' },
+          git = '',
+        }
+
+        -- Check if we have a specific config for this filetype
+        if ft_providers[filetype] then
+          return ft_providers[filetype]
+        end
+
+        -- For most filetypes use lsp->treesitter->indent chain
+        -- Use indent as fallback for treesitter as it's the most reliable
         return { 'treesitter', 'indent' }
       end,
-    }
 
-    -- Standard UFO keymaps
-    vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
-    vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
-    vim.keymap.set('n', 'K', function()
-      local winid = require('ufo').peekFoldedLinesUnderCursor()
-      if not winid then
-        vim.lsp.buf.hover()
-      end
-    end)
+      -- Customize fold text
+      fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
+        local newVirtText = {}
+        local suffix = ('  %d lines'):format(endLnum - lnum)
+        local sufWidth = vim.fn.strdisplaywidth(suffix)
+        local targetWidth = width - sufWidth
+        local curWidth = 0
 
-    -- Add a specific keymap for folding Go log lines
-    vim.keymap.set('n', 'zL', function()
-      -- Only apply to Go files
-      if vim.bo.filetype ~= 'go' then
-        vim.notify('Not a Go file', vim.log.levels.WARN)
-        return
-      end
+        for _, chunk in ipairs(virtText) do
+          local chunkText = chunk[1]
+          local chunkWidth = vim.fn.strdisplaywidth(chunkText)
 
-      local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-      local ranges = {}
-      local start_line = nil
+          if targetWidth > curWidth + chunkWidth then
+            table.insert(newVirtText, chunk)
+          else
+            chunkText = truncate(chunkText, targetWidth - curWidth)
+            local hlGroup = chunk[2]
+            table.insert(newVirtText, { chunkText, hlGroup })
+            chunkWidth = vim.fn.strdisplaywidth(chunkText)
 
-      -- Function to determine if a line is part of a Go log statement
-      local function isLogStart(line)
-        return line:match 'log%.' and (line:match 'Error%(%)' or line:match 'Info%(%)' or line:match 'Debug%(%)' or line:match 'Warn%(%)')
-      end
-
-      -- Function to determine if a line is the end of a log statement
-      local function isLogEnd(line)
-        return line:match 'Msg%('
-      end
-
-      -- Find all log statement ranges
-      for i, line in ipairs(lines) do
-        if isLogStart(line) then
-          start_line = i
-        elseif isLogEnd(line) and start_line then
-          table.insert(ranges, { start_line, i })
-          start_line = nil
+            -- Add padding
+            if curWidth + chunkWidth < targetWidth then
+              suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
+            end
+            break
+          end
+          curWidth = curWidth + chunkWidth
         end
-      end
 
-      -- Create folds for each range
-      for _, range in ipairs(ranges) do
-        vim.cmd(range[1] .. ',' .. range[2] .. 'fold')
-      end
+        table.insert(newVirtText, { suffix, 'MoreMsg' })
+        return newVirtText
+      end,
 
-      vim.notify('Folded ' .. #ranges .. ' log statements')
-    end, { desc = 'Fold Go log statements' })
-  end,
-  init = function()
-    vim.o.foldcolumn = '0'
-    vim.o.foldlevel = 99
-    vim.o.foldlevelstart = 99
-    vim.o.foldenable = true
-  end,
-  dependencies = {
-    { 'kevinhwang91/promise-async' },
+      -- Preview window configuration
+      preview = {
+        win_config = {
+          border = 'rounded',
+          winblend = 12,
+          winhighlight = 'Normal:Normal',
+          maxheight = 20,
+        },
+        mappings = {
+          scrollB = '',
+          scrollF = '',
+          scrollU = '<C-u>',
+          scrollD = '<C-d>',
+          scrollE = '<C-e>',
+          scrollY = '<C-y>',
+          close = 'q',
+          switch = '<Tab>',
+          trace = '<CR>',
+        },
+      },
+    },
+
+    init = function()
+      -- Set folding options
+      vim.o.foldlevel = 99
+      vim.o.foldlevelstart = 99
+      vim.o.foldenable = true
+      vim.o.foldcolumn = '1' -- '0' is also good
+
+      -- Hide fold column in certain filetypes
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = { 'neo-tree', 'Trouble', 'help', 'dashboard' },
+        callback = function()
+          vim.opt_local.foldcolumn = '0'
+        end,
+      })
+    end,
+
+    config = function(_, opts)
+      -- Set up UFO
+      require('ufo').setup(opts)
+
+      -- Keymaps
+      local ufo = require 'ufo'
+
+      -- Open/close all folds
+      vim.keymap.set('n', 'zR', ufo.openAllFolds)
+      vim.keymap.set('n', 'zM', ufo.closeAllFolds)
+
+      -- More advanced fold control
+      vim.keymap.set('n', 'zr', ufo.openFoldsExceptKinds)
+      vim.keymap.set('n', 'zm', ufo.closeFoldsWith)
+
+      -- K shows hover or opens fold
+      vim.keymap.set('n', 'K', function()
+        local winid = ufo.peekFoldedLinesUnderCursor()
+        if not winid then
+          -- If no fold, trigger LSP hover
+          vim.lsp.buf.hover()
+        end
+      end, { desc = 'Hover or peek fold' })
+
+      -- Override default z-key fold commands with ufo versions
+      vim.keymap.set('n', 'zc', function()
+        local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+        ufo.closeFolds { row }
+      end)
+
+      vim.keymap.set('n', 'zo', function()
+        local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+        ufo.openFolds { row }
+      end)
+    end,
   },
 }
