@@ -9,15 +9,12 @@ return {
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
       ensure_installed = {
-        'bash',
         'c',
         'diff',
         'html',
         'lua',
         'luadoc',
-        'markdown',
         'markdown_inline',
-        'query',
         'vim',
         'vimdoc',
         'yaml',
@@ -33,6 +30,27 @@ return {
         'gomod',
         'gowork',
         'gosum',
+        'javascript',
+        'typescript',
+        'svelte',
+        'diff',
+        'html',
+        'latex',
+        'regex',
+        'scss',
+        'tsx',
+        'typst',
+        'python',
+        'bash',
+        'markdown',
+        'luadoc',
+        'markdown_inline',
+        'query',
+        'http',
+        'terraform',
+        'hcl',
+        'dockerfile',
+        'docker_compose',
       },
       -- Autoinstall languages that are not installed
       auto_install = true,
@@ -44,6 +62,16 @@ return {
         additional_vim_regex_highlighting = { 'ruby' },
       },
       indent = { enable = true, disable = { 'ruby' } },
+      incremental_selection = {
+        enable = true,
+        keymaps = {
+          init_selection = '<C-space>',
+          node_incremental = '<C-space>',
+          scope_incremental = '<nop>',
+          node_decremental = '<bs>',
+        },
+      },
+
       textobjects = {
         select = {
           enable = true,
@@ -54,6 +82,13 @@ return {
             ['if'] = '@function.inner',
             ['ac'] = '@class.outer',
             ['ic'] = '@class.inner',
+            ['aa'] = '@parameter.outer',
+            ['ia'] = '@parameter.inner',
+            ['ii'] = '@conditional.inner',
+            ['ai'] = '@conditional.outer',
+            ['il'] = '@loop.inner',
+            ['al'] = '@loop.outer',
+            ['at'] = '@comment.outer',
           },
         },
         move = {
@@ -61,7 +96,7 @@ return {
           set_jumps = true, -- whether to set jumps in the jumplist
           goto_next_start = {
             [']f'] = '@function.outer',
-            [']c'] = '@class.outer',
+            [']]'] = { query = '@class.outer', desc = 'Next class start' },
           },
           goto_next_end = {
             [']F'] = '@function.outer',
@@ -69,11 +104,11 @@ return {
           },
           goto_previous_start = {
             ['[f'] = '@function.outer',
-            ['[c'] = '@class.outer',
+            ['[['] = '@class.outer',
           },
           goto_previous_end = {
             ['[F'] = '@function.outer',
-            ['[C'] = '@class.outer',
+            ['[]'] = '@class.outer',
           },
         },
       },

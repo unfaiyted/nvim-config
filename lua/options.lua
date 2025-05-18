@@ -94,18 +94,18 @@ vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
 --
 --
 -- Jinja2 support ish
-vim.filetype.add {
-  extension = {
-    ['j2'] = function(path, bufnr)
-      if path:match '%.ya?ml%.j2$' then
-        return 'yaml.jinja2'
-      -- json.j2
-      elseif path:match '%.json%.j2$' then
-        return 'json.jinja2'
-      end
-    end,
-  },
-}
+-- vim.filetype.add {
+--   extension = {
+--     ['j2'] = function(path, bufnr)
+--       if path:match '%.ya?ml%.j2$' then
+--         return 'yaml.jinja2'
+--       -- json.j2
+--       elseif path:match '%.json%.j2$' then
+--         return 'json.jinja2'
+--       end
+--     end,
+--   },
+-- }
 
 -- vim.filetype.add {
 -- pattern = {
