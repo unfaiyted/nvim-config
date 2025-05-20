@@ -393,19 +393,19 @@ vim.keymap.set('i', '<C-s>', '<Esc>', { noremap = true })
 vim.keymap.set('i', '<Esc>', '<Esc>', { noremap = true })
 vim.keymap.set('i', '<C-s>', '<Esc>', { noremap = true })
 
-function SafePaste()
-  -- Store the current unnamed register content
-  local saved_reg = vim.fn.getreg '"'
-  local saved_reg_type = vim.fn.getregtype '"'
-
-  -- Perform paste
-  vim.cmd 'normal! p'
-
-  -- Restore the unnamed register to its previous state
-  vim.fn.setreg('"', saved_reg, saved_reg_type)
-end
--- paste from default register does not replace the default register
-vim.keymap.set('n', '<leader>p', SafePaste, { noremap = true })
+-- function SafePaste()
+--   -- Store the current unnamed register content
+--   local saved_reg = vim.fn.getreg '"'
+--   local saved_reg_type = vim.fn.getregtype '"'
+--
+--   -- Perform paste
+--   vim.cmd 'normal! p'
+--
+--   -- Restore the unnamed register to its previous state
+--   vim.fn.setreg('"', saved_reg, saved_reg_type)
+-- end
+-- -- paste from default register does not replace the default register
+-- vim.keymap.set('n', '<leader>p', SafePaste, { noremap = true })
 
 -- Mark keymaps
 -- vim.keymap.set('n', 'ma', 'mA', { desc = 'Set mark A', noremap = true })
@@ -417,3 +417,24 @@ vim.keymap.set('n', '<leader>p', SafePaste, { noremap = true })
 
 -- Window maximize toggle keymap
 vim.keymap.set('n', '+', ToggleMaximize, { desc = 'Toggle window maximize', silent = true })
+
+-- Copy the path of the current buffer to the clipboard
+vim.keymap.set('n', '<leader>cp', function()
+  local path = vim.fn.expand '%:p'
+  vim.fn.setreg('+', path)
+  vim.notify('Copied: ' .. path, vim.log.levels.INFO)
+end, { desc = 'Copy current buffer path' })
+
+-- Open Nautilus in current buffer directory
+vim.keymap.set('n', '<leader>oe', function()
+  local dir = vim.fn.expand '%:p:h'
+  vim.fn.jobstart('GDK_BACKEND=x11 nautilus ' .. vim.fn.shellescape(dir))
+  vim.notify('Opening Nautilus in: ' .. dir, vim.log.levels.INFO)
+end, { desc = '[O]pen [E]xplorer in current buffer directory' })
+
+-- Open Nautilus in current buffer directory
+vim.keymap.set('n', '<leader>oz', function()
+  local path = vim.fn.expand '%:p'
+  vim.fn.jobstart('~/Applications/Zen.AppImage ' .. vim.fn.shellescape(path))
+  vim.notify('Opening Zen file: ' .. path, vim.log.levels.INFO)
+end, { desc = '[O]pen [Z]en in current buffer directory' })
