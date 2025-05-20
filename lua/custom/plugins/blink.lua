@@ -6,46 +6,7 @@ return {
   dependencies = {
     {
       'L3MON4D3/LuaSnip',
-      keys = {
-        -- {
-        --   "<Enter>",
-        --   function()
-        --     return require("luasnip").expand_or_jump()
-        --   end,
-        --   mode = "i",
-        --
-        -- },
-        -- {
-        --   '<C-c>',
-        --   function()
-        --     return require 'luasnip.extras.select_choice'()
-        --   end,
-        --   mode = 'i',
-        -- },
-        -- {
-        --   '<Tab>',
-        --   function()
-        --     return require('luasnip').jumpable(1) and '<Plug>luasnip-jump-next' or '<tab>'
-        --   end,
-        --   expr = true,
-        --   silent = true,
-        --   mode = 'i',
-        -- },
-        -- {
-        --   '<Tab>',
-        --   function()
-        --     require('luasnip').jump(1)
-        --   end,
-        --   mode = 's',
-        -- },
-        -- {
-        --   '<S-tab>',
-        --   function()
-        --     require('luasnip').jump(-1)
-        --   end,
-        --   mode = { 'i', 's' },
-        -- },
-      },
+      keys = {},
       init = function()
         require('luasnip.loaders.from_snipmate').load()
         require('luasnip.loaders.from_lua').load {
@@ -91,8 +52,6 @@ return {
       preset = 'default',
       ['<C-j>'] = { 'select_next', 'fallback' },
       ['<C-k>'] = { 'select_prev', 'fallback' },
-      -- ['<C-d>'] = { 'scroll_documentation_down', 'fallback' },
-      -- ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
       ['<CR>'] = { 'accept', 'fallback' },
     },
 
@@ -109,7 +68,8 @@ return {
     -- Default list of enabled providers defined so that you can extend it
     -- elsewhere in your config, without redefining it, due to `opts_extend`
     sources = {
-      default = { 'lsp', 'snippets', 'path', 'buffer', 'codecompanion' },
+      -- 'codecompanion'
+      default = { 'lsp', 'snippets', 'path', 'buffer' },
       providers = {
         lsp = {
           transform_items = function(_, items)
@@ -122,56 +82,13 @@ return {
           module = 'blink.cmp.sources.lsp',
           -- max_items = 20,
         },
-        codecompanion = {
-          name = 'CodeCompanion',
-          module = 'codecompanion.providers.completion.blink',
-          enabled = true,
-        },
+        -- codecompanion = {
+        --   name = 'CodeCompanion',
+        --   module = 'codecompanion.providers.completion.blink',
+        --   enabled = true,
+        -- },
       },
     },
   },
   opts_extend = { 'sources.default' },
 }
--- return {}
--- return { --- https://github.com/saghen/blink.cmp
---   'saghen/blink.cmp',
---   dependencies = 'rafamadriz/friendly-snippets',
---   version = '*',
---   opts = {
---     completion = {
---       ghost_text = { enabled = true },
---       menu = {
---         border = 'single',
---         auto_show = function(ctx) -- don't auto show except for cmdline and path
---           return (ctx.mode == 'cmdline') or (ctx.mode == 'path')
---         end,
---       },
---       documentation = { auto_show = true, window = { border = 'single' } },
---     },
---     signature = { enabled = true, window = { border = 'single' } },
---     keymap = {
---       preset = 'super-tab',
---       ['<C-n>'] = { 'show', 'select_next', 'fallback' },
---     },
---     cmdline = {
---       keymap = {
---         preset = 'super-tab',
---         ['<Up>'] = { 'fallback' },
---         ['<Down>'] = { 'fallback' },
---         ['<C-n>'] = { 'show', 'select_next', 'fallback' },
---         ['<C-p>'] = { 'show', 'select_prev', 'fallback' },
---       },
---     },
---     sources = {
---       default = { 'lazydev', 'lsp', 'path', 'snippets', 'buffer' },
---       providers = {
---         lazydev = {
---           name = 'LazyDev',
---           module = 'lazydev.integrations.blink',
---           score_offset = 100,
---         },
---         path = { opts = { show_hidden_files_by_default = true } },
---       },
---     },
---   },
--- }

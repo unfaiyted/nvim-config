@@ -1,132 +1,98 @@
 return {
-  'olimorris/codecompanion.nvim',
-  dependencies = {
-    'nvim-lua/plenary.nvim',
-    { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
-    { 'echasnovski/mini.diff' },
-    { 'ravitemer/mcphub.nvim' },
-    -- { 'hrsh7th/nvim-cmp' },
-    --- The below is optional, make sure to setup it properly if you have lazy=true
-    -- {
-    --   'saghen/blink.cmp',
-    --   lazy = false,
-    --   enabled = true,
-    --   version = '*',
-    --   opts = {
-    --     keymap = {
-    --       preset = 'enter',
-    --       ['<S-Tab>'] = { 'select_prev', 'fallback' },
-    --       ['<Tab>'] = { 'select_next', 'fallback' },
-    --     },
-    --     cmdline = { sources = { 'cmdline' } },
-    --     sources = {
-    --       default = { 'lsp', 'path', 'buffer', 'codecompanion' },
-    --       providers = {
-    --         codecompanion = {
-    --           name = 'CodeCompanion',
-    --           module = 'codecompanion.providers.completion.blink',
-    --           enabled = true,
-    --         },
-    --       },
-    --     },
-    --   },
-    --   opts_extend = {
-    --     'sources.default',
-    --   },
-    -- },
-    -- {
-    --
-    --   'MeanderingProgrammer/render-markdown.nvim',
-    --   ft = { 'markdown', 'codecompanion' },
-    -- },
-  },
-  config = function()
-    require('codecompanion').setup {
-
-      display = {
-        chat = {
-          diff = { enabled = true },
-        },
-        diff = {
-          enabled = true,
-          provider = 'mini_diff',
-        },
-      },
-      strategies = {
-        chat = {
-          tools = {
-            ['mcp'] = {
-              -- calling it in a function would prevent mcphub from being loaded before it's needed
-              callback = function()
-                return require 'mcphub.extensions.codecompanion'
-              end,
-              description = 'Call tools and resources from the MCP Servers',
-              opts = {
-                requires_approval = true,
-              },
-            },
-          },
-          adapter = 'anthropic',
-          keymaps = {
-            send = {
-              modes = {
-                n = '<C-s>',
-                i = '<C-s>',
-              },
-              -- callback = custom_send_callback,
-              -- callback = function()
-              --   vim.cmd 'stopinsert'
-              --   -- keymaps.send(cc.chat)
-              --   -- require("codecompanion"
-              -- end,
-              description = 'Send with mode switch',
-            },
-          },
-        },
-        inline = {
-          adapter = 'anthropic',
-        },
-        cmd = { adapter = 'anthropic' },
-      },
-    }
-
-    -- local original_keymaps = {}
-    -- vim.defer_fn(function()
-    --   if keymaps then
-    --     original_keymaps.send = keymaps.send
-    --   end
-    -- end, 100)
-  end,
-  keys = {
-    {
-      mode = { 'n', 'v' },
-      '<A-a>',
-      '<cmd>CodeCompanionActions<cr>',
-      desc = 'Open CodeCompanion actions',
-    },
-    {
-      mode = { 'n', 'v' },
-      '<LocalLeader>a',
-      '<cmd>CodeCompanionChat Toggle<cr>',
-      desc = 'Toggle CodeCompanion chat',
-    },
-    {
-      '<leader>cd',
-      '<cmd>CodeCompanionChat Toggle<cr>',
-      mode = { 'n' },
-      desc = 'Toggle CodeCompanion Chat',
-    },
-    {
-      '<leader>cc',
-      "<cmd>'<,'> CodeCompanionChat<cr>",
-      mode = { 'v' },
-      desc = 'Toggle CodeCompanion Chat with Visual Selection',
-    },
-    {
-      mode = 'v',
-      'ga',
-      '<cmd>CodeCompanionChat add<cr>',
-      desc = 'add selection to codecompanion chat',
-    },
-  },
+  -- 'olimorris/codecompanion.nvim',
+  -- dependencies = {
+  --   'nvim-lua/plenary.nvim',
+  --   { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
+  --   { 'echasnovski/mini.diff' },
+  --   -- { 'ravitemer/mcphub.nvim' },
+  -- },
+  -- config = function()
+  --   require('codecompanion').setup {
+  --
+  --     display = {
+  --       chat = {
+  --         diff = { enabled = true },
+  --       },
+  --       diff = {
+  --         enabled = true,
+  --         provider = 'mini_diff',
+  --       },
+  --     },
+  --     strategies = {
+  --       chat = {
+  --         tools = {
+  --           -- ['mcp'] = {
+  --           --   -- calling it in a function would prevent mcphub from being loaded before it's needed
+  --           --   callback = function()
+  --           --     return require 'mcphub.extensions.codecompanion'
+  --           --   end,
+  --           --   description = 'Call tools and resources from the MCP Servers',
+  --           --   opts = {
+  --           --     requires_approval = true,
+  --           --   },
+  --           -- },
+  --         },
+  --         adapter = 'anthropic',
+  --         keymaps = {
+  --           send = {
+  --             modes = {
+  --               n = '<C-s>',
+  --               i = '<C-s>',
+  --             },
+  --             -- callback = custom_send_callback,
+  --             -- callback = function()
+  --             --   vim.cmd 'stopinsert'
+  --             --   -- keymaps.send(cc.chat)
+  --             --   -- require("codecompanion"
+  --             -- end,
+  --             description = 'Send with mode switch',
+  --           },
+  --         },
+  --       },
+  --       inline = {
+  --         adapter = 'anthropic',
+  --       },
+  --       cmd = { adapter = 'anthropic' },
+  --     },
+  --   }
+  --
+  --   -- local original_keymaps = {}
+  --   -- vim.defer_fn(function()
+  --   --   if keymaps then
+  --   --     original_keymaps.send = keymaps.send
+  --   --   end
+  --   -- end, 100)
+  -- end,
+  -- keys = {
+  --   {
+  --     mode = { 'n', 'v' },
+  --     '<A-a>',
+  --     '<cmd>CodeCompanionActions<cr>',
+  --     desc = 'Open CodeCompanion actions',
+  --   },
+  --   {
+  --     mode = { 'n', 'v' },
+  --     '<LocalLeader>a',
+  --     '<cmd>CodeCompanionChat Toggle<cr>',
+  --     desc = 'Toggle CodeCompanion chat',
+  --   },
+  --   {
+  --     '<leader>cd',
+  --     '<cmd>CodeCompanionChat Toggle<cr>',
+  --     mode = { 'n' },
+  --     desc = 'Toggle CodeCompanion Chat',
+  --   },
+  --   {
+  --     '<leader>cc',
+  --     "<cmd>'<,'> CodeCompanionChat<cr>",
+  --     mode = { 'v' },
+  --     desc = 'Toggle CodeCompanion Chat with Visual Selection',
+  --   },
+  --   {
+  --     mode = 'v',
+  --     'ga',
+  --     '<cmd>CodeCompanionChat add<cr>',
+  --     desc = 'add selection to codecompanion chat',
+  --   },
+  -- },
 }
