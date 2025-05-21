@@ -1,0 +1,24 @@
+-- Jinja2 support ish
+-- vim.filetype.add {
+--   extension = {
+--     ['j2'] = function(path, bufnr)
+--       if path:match '%.ya?ml%.j2$' then
+--         return 'yaml.jinja2'
+--       -- json.j2
+--       elseif path:match '%.json%.j2$' then
+--         return 'json.jinja2'
+--       end
+--     end,
+--   },
+-- }
+
+-- vim.filetype.add {
+-- pattern = {
+--   -- Detect ansible playbooks
+--   ['.*/playbooks/.*%.yml'] = 'yaml.ansible',
+--   ['.*/roles/.*%.yml'] = 'yaml.ansible',
+--   ['.*/tasks/.*%.yml'] = 'yaml.ansible',
+--   ['.*/handlers/.*%.yml'] = 'yaml.ansible',
+--   ['.*ansible.*%.yml'] = 'yaml.ansible',
+--   ['.*%.ansible%.yml'] = 'yaml.ansible',
+-- },

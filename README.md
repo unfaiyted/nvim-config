@@ -242,13 +242,3 @@ sudo pacman -S --noconfirm --needed gcc make git ripgrep fd unzip neovim
 ```
 </details>
 
-```mermaid
-graph TD
-    A[neovim] --> B[ripgrep]
-    B --> C[fd]
-    C --> D[fzf]
-    D --> E[fzf-lua]
-    E --> F[fzf-vim]
-    F --> G[fzf-preview]
-    G --> H[fzf-marks]
-```

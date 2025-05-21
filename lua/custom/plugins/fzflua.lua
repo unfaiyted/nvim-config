@@ -35,7 +35,7 @@ return {
     end, { desc = '[F]ind [w]ord under cursor' })
 
     -- Override default search with fuzzy buffer search
-    vim.keymap.set('n', '/', function()
+    vim.keymap.set('n', '<leader>/', function()
       fzf.blines { fzf_opts = { ['--no-sort'] = false } }
     end, { desc = 'Fuzzy search in buffer' })
 
