@@ -16,15 +16,7 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
--- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
-
 -- Keybinds to make split navigation easier.
---  Use CTRL+<hjkl> to switch between windows
---
 --  See `:help wincmd` for a list of all window commands
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
@@ -438,3 +430,18 @@ vim.keymap.set('n', '<leader>oz', function()
   vim.fn.jobstart('~/Applications/Zen.AppImage ' .. vim.fn.shellescape(path))
   vim.notify('Opening Zen file: ' .. path, vim.log.levels.INFO)
 end, { desc = '[O]pen [Z]en in current buffer directory' })
+
+local function copy_buffer_diagnostics()
+  local diagnostics = vim.diagnostic.get(0) -- 0 = current buffer
+  local lines = {}
+
+  for _, diagnostic in ipairs(diagnostics) do
+    local line = string.format('L%d:%d: %s', diagnostic.lnum + 1, diagnostic.col + 1, diagnostic.message)
+    table.insert(lines, line)
+  end
+
+  vim.fn.setreg('+', table.concat(lines, '\n'))
+  print(string.format('Copied %d diagnostics', #diagnostics))
+end
+
+vim.keymap.set('n', '<leader>cd', copy_buffer_diagnostics, { desc = 'Copy buffer diagnostics' })

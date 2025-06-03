@@ -323,6 +323,52 @@ return {
         --     },
         --   },
         -- },
+        -- css_variables = {
+        --   cmd = { 'css-variables-language-server', '--stdio' },
+        --   filetypes = { 'css', 'scss', 'less' },
+        --   root_markers = { 'package.json', '.git' },
+        --   init_options = {
+        --     provideFormatter = true,
+        --   },
+        --   settings = {
+        --     cssVariables = {
+        --       blacklistFolders = {
+        --         '**/.cache',
+        --         '**/.DS_Store',
+        --         '**/.git',
+        --         '**/.hg',
+        --         '**/.next',
+        --         '**/.svn',
+        --         '**/bower_components',
+        --         '**/CVS',
+        --         '**/dist',
+        --         '**/node_modules',
+        --         '**/tests',
+        --         '**/tmp',
+        --       },
+        --       lookupFiles = { '**/*.less', '**/*.scss', '**/*.sass', '**/*.css' },
+        --     },
+        --   },
+        -- },
+        somesass_ls = {
+          cmd = { 'some-sass-language-server', '--stdio' },
+          filetypes = { 'scss', 'sass', 'css' },
+          root_markers = { 'package.json', '.git' },
+          init_options = {
+            clientCapabilities = {
+              workspace = {
+                fileOperations = {
+                  willRename = true,
+                },
+              },
+            },
+          },
+          settings = {
+            sass = {
+              loadPaths = { 'node_modules', 'src' },
+            },
+          },
+        },
         terraformls = {},
         jinja_lsp = {
           filetypes = { 'jinja', 'j2' },
@@ -355,6 +401,35 @@ return {
               chainedCalls = {
                 enabled = true,
               },
+            },
+          },
+        },
+        cssls = {
+          capabilities = vim.tbl_deep_extend('force', {
+            textDocument = {
+              completion = {
+                completionItem = {
+                  snippetSupport = true,
+                },
+              },
+            },
+          }, capabilities or {}),
+          settings = {
+            css = {
+              validate = true,
+              lint = {
+                compatibleVendorPrefixes = 'ignore',
+              },
+            },
+            scss = {
+              validate = true,
+              lint = {
+                compatibleVendorPrefixes = 'ignore',
+              },
+              importStrategy = 'relative',
+            },
+            less = {
+              validate = true,
             },
           },
         },
@@ -393,7 +468,7 @@ return {
       local capabilities = blink_cmp.get_lsp_capabilities()
 
       require('mason-lspconfig').setup {
-        ensure_installed = { 'svelte', 'gopls', 'vtsls', 'ansiblels', 'terraform-ls' }, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+        ensure_installed = { 'svelte', 'gopls', 'vtsls', 'ansiblels', 'cssls', 'css_variables' }, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
         automatic_installation = true,
         handlers = {
           function(server_name)
